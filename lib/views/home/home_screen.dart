@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sample_one/contants/constants.dart';
 import 'package:sample_one/providers/search_provider.dart';
-import 'package:sample_one/views/add_screen.dart';
-import 'package:sample_one/views/studentview_screen.dart';
+import 'package:sample_one/views/home/widgets/animated_swither.dart';
+import 'package:sample_one/views/studentview/studentview_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -20,84 +20,9 @@ class HomeScreen extends StatelessWidget {
         body: Column(
           children: [
             Consumer<SearchProvider>(builder: (context, searchValue, _) {
-              return AnimatedSwitcher(
-                duration: const Duration(milliseconds: 500),
-                child: searchValue.visible == false
-                    ? Container(
-                        key: const Key('1'),
-                        width: double.infinity,
-                        height: 70,
-                        color: Theme.of(context).primaryColor,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 15.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              const Text(
-                                'STUDENTS',
-                                style: TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                              const Spacer(),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => AddScreen(),
-                                        ),
-                                      );
-                                    },
-                                    icon: const Icon(Icons.add),
-                                    iconSize: 30,
-                                    color: Colors.white,
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      searchValue.searchOnOff(true);
-                                    },
-                                    icon: const Icon(Icons.search),
-                                    iconSize: 30,
-                                    color: Colors.white,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    : SizedBox(
-                        height: 70,
-                        width: double.infinity,
-                        key: const Key('2'),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 15, top: 15),
-                          child: TextField(
-                            controller: searchController,
-                            onChanged: ((value) =>
-                                searchValue.searchStudent(value)),
-                            decoration: InputDecoration(
-                              hintText: 'Search Student',
-                              suffixIcon: GestureDetector(
-                                onTap: () {
-                                  searchValue.searchOnOff(false);
-                                  searchValue.searchStudent('');
-                                },
-                                child: const Icon(
-                                  CupertinoIcons.xmark_circle,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+              return SwitcherWidget(
+                searchController: searchController,
+                searchValue: searchValue,
               );
             }),
             Expanded(
@@ -186,6 +111,8 @@ class HomeScreen extends StatelessWidget {
                     Provider.of<SearchProvider>(context, listen: false);
                 search.delete(id);
                 search.searchStudent(searchController.text);
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(customSnackBar('Deleted', Colors.red));
                 Navigator.of(ctx).pop();
               },
               child: const Text('Yes'),

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sample_one/providers/image_provider.dart';
 import 'package:sample_one/providers/search_provider.dart';
 import 'package:sample_one/providers/students_provider.dart';
-import 'package:sample_one/views/home_screen.dart';
+import 'package:sample_one/views/home/home_screen.dart';
 
 import 'model/data_model.dart';
 
