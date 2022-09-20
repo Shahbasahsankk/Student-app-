@@ -51,6 +51,7 @@ class AddScreen extends StatelessWidget {
     final imgProvider = Provider.of<ImageProvder>(context, listen: false);
     if (type == ActionType.addScreen) {
       imgProvider.img = null;
+      imgProvider.isVisible=false;
     }
 
     return SafeArea(
